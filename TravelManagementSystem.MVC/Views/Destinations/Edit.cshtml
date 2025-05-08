@@ -1,0 +1,75 @@
+﻿@using TravelManagementSystem.MVC.Models.Destination
+@using TravelManagementSystem.MVC.Models.Destination.ViewModels
+@model EditDestinationViewModel
+@{
+    ViewBag.Title = "Редактиране на дестинация";
+}
+
+<h2 class="mb-4">
+    <i class="bi bi-pencil-square me-1"></i>@ViewBag.Title
+</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle-fill me-1"></i>@TempData["Error"]
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Country, new { @class = "form-label" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-flag-fill"></i></span>
+            @Html.TextBoxFor(m => m.Country, new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Country, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.City, new { @class = "form-label" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-building"></i></span>
+            @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 4 })
+        </div>
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Latitude, new { @class = "form-label" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-compass"></i></span>
+            @Html.TextBoxFor(m => m.Latitude, new { @class = "form-control", type = "number", step = "0.000001" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Latitude, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Longitude, new { @class = "form-label" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-geo"></i></span>
+            @Html.TextBoxFor(m => m.Longitude, new { @class = "form-control", type = "number", step = "0.000001" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Longitude, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-save me-1"></i>Запази промените
+    </button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">
+        <i class="bi bi-arrow-left-circle me-1"></i>Назад
+    </a>
+}

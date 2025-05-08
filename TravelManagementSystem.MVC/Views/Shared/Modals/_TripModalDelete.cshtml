@@ -1,0 +1,26 @@
+﻿@using TravelManagementSystem.MVC.Models.Trip
+@using TravelManagementSystem.MVC.Models.Trip.ViewModels
+@model TripViewModel
+
+<div class="modal fade" id="deleteTripModal-@Model.Id" tabindex="-1" aria-labelledby="deleteTripLabel-@Model.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteTripLabel-@Model.Id">
+                    Потвърди изтриване
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Затвори"></button>
+            </div>
+            <div class="modal-body">
+                Наистина ли искате да изтриете пътуване <strong>@Model.Title</strong> към <strong>@Model.DestinationName</strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отказ</button>
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Изтрий</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

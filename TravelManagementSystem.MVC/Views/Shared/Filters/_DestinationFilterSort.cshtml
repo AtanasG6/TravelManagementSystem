@@ -1,0 +1,43 @@
+﻿@using TravelManagementSystem.MVC.Models.Destination
+@using TravelManagementSystem.MVC.Models.Destination.Parameters
+@model DestinationFilterParameters
+
+<form method="get" class="row g-2 mb-4 align-items-end">
+    <div class="col-md-3">
+        <input type="text" name="country" value="@Model?.Country" class="form-control" placeholder="Държава" />
+    </div>
+
+    <div class="col-md-3">
+        <input type="text" name="city" value="@Model?.City" class="form-control" placeholder="Град" />
+    </div>
+
+    <div class="col-md-2">
+        <select name="orderBy" class="form-select">
+            <option value="">Сортиране по...</option>
+            <option value="country" selected="@(Model?.OrderBy == "country" ? "selected" : null)">Държава</option>
+            <option value="city" selected="@(Model?.OrderBy == "city" ? "selected" : null)">Град</option>
+            <option value="createdOn" selected="@(Model?.OrderBy == "createdOn" ? "selected" : null)">Създадена на</option>
+            <option value="updatedOn" selected="@(Model?.OrderBy == "updatedOn" ? "selected" : null)">Обновена на</option>
+            <option value="isActive" selected="@(Model?.OrderBy == "isActive" ? "selected" : null)">Активност</option>
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <select name="isDescending" class="form-select">
+            <option value="false" selected="@(Model?.IsDescending == false ? "selected" : null)">Възходящо</option>
+            <option value="true" selected="@(Model?.IsDescending == true ? "selected" : null)">Низходящо</option>
+        </select>
+    </div>
+
+    <div class="col-md-auto d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search me-1"></i>Търси
+        </button>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-x-circle me-1"></i>Изчисти
+        </a>
+    </div>
+
+    <input type="hidden" name="page" value="1" />
+    <input type="hidden" name="pageSize" value="@Model?.PageSize" />
+</form>

@@ -1,0 +1,123 @@
+﻿@using TravelManagementSystem.MVC.Models.Destination
+@using TravelManagementSystem.MVC.Models.Destination.External
+@model DestinationExternalViewModel
+@{
+    ViewBag.Title = "Външна информация";
+}
+
+<h2 class="mb-4">Външна информация</h2>
+
+<a asp-controller="Destinations" asp-action="Index" class="btn btn-secondary mb-3">
+    <i class="bi bi-arrow-left me-1"></i>Назад
+</a>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+else
+{
+    <div class="row">
+        <!-- Weather Card -->
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                    <i class="bi bi-cloud-sun-fill me-2"></i> Метеорологична прогноза
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="@Model.WeatherInfo.IconUrl" alt="Икона" class="me-3" style="width:60px; height:60px;" />
+                        <h5 class="card-title mb-0 text-capitalize">@Model.WeatherInfo.Description</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="bi bi-geo-alt me-2"></i>
+                            <strong>Град:</strong> @Model.WeatherInfo.City, @Model.WeatherInfo.Country
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-thermometer-half me-2"></i>
+                            <strong>Температура:</strong> @Model.WeatherInfo.Temperature.ToString("F1")°C (усеща се като @Model.WeatherInfo.FeelsLike.ToString("F1")°C)
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-thermometer-snow me-2"></i>
+                            <strong>Мин/Макс:</strong> @Model.WeatherInfo.TempMin.ToString("F1")°C / @Model.WeatherInfo.TempMax.ToString("F1")°C
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-speedometer2 me-2"></i>
+                            <strong>Налягане:</strong> @Model.WeatherInfo.Pressure hPa
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-droplet me-2"></i>
+                            <strong>Влажност:</strong> @Model.WeatherInfo.Humidity%
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-cloud me-2"></i>
+                            <strong>Облачност:</strong> @Model.WeatherInfo.Cloudiness%
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-wind me-2"></i>
+                            <strong>Вятър:</strong> @Model.WeatherInfo.WindSpeed м/с, @Model.WeatherInfo.WindDegree°
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-sunrise me-2"></i>
+                            <strong>Изгрев:</strong> @Model.WeatherInfo.Sunrise.ToString("yyyy-MM-dd HH:mm")
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-sunset me-2"></i>
+                            <strong>Залез:</strong> @Model.WeatherInfo.Sunset.ToString("yyyy-MM-dd HH:mm")
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Country Card -->
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">
+                    <i class="bi bi-flag-fill me-2"></i> Информация за страната
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">@Model.CountryInfo.Name</h5>
+                        <img src="@Model.CountryInfo.FlagUrl" alt="Флаг" style="width:60px; height:auto;" />
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="bi bi-caret-right-fill me-2"></i>
+                            <strong>Официално име:</strong> @Model.CountryInfo.OfficialName
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-building me-2"></i>
+                            <strong>Столица:</strong> @Model.CountryInfo.Capital
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-globe me-2"></i>
+                            <strong>Регион/Подрегион:</strong> @Model.CountryInfo.Region / @Model.CountryInfo.Subregion
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-people-fill me-2"></i>
+                            <strong>Население:</strong> @Model.CountryInfo.Population.ToString("N0")
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-aspect-ratio me-2"></i>
+                            <strong>Площ:</strong> @Model.CountryInfo.Area.ToString("N2") km²
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-translate me-2"></i>
+                            <strong>Езици:</strong> @string.Join(", ", Model.CountryInfo.Languages)
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-currency-exchange me-2"></i>
+                            <strong>Валути:</strong> @string.Join(", ", Model.CountryInfo.Currencies)
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-geo-alt-fill me-2"></i>
+                            <strong>Карта:</strong> <a href="@Model.CountryInfo.MapUrl" target="_blank">Виж на картата</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}

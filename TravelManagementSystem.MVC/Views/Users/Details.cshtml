@@ -1,0 +1,76 @@
+﻿@using TravelManagementSystem.MVC.Models.User
+@using TravelManagementSystem.MVC.Models.User.ViewModels
+@model UserViewModel
+
+@{
+    ViewBag.Title = "Детайли за потребител";
+}
+
+<h2 class="mb-4">
+    <i class="bi bi-person-circle me-2"></i>@ViewBag.Title
+</h2>
+
+<table class="table table-bordered align-middle">
+    <tr>
+        <th><i class="bi bi-hash me-1"></i>ID</th>
+        <td>@Model.Id</td>
+    </tr>
+    <tr>
+        <th><i class="bi bi-person-fill me-1"></i>Потребителско име</th>
+        <td>@Model.Username</td>
+    </tr>
+    <tr>
+        <th><i class="bi bi-envelope-fill me-1"></i>Имейл</th>
+        <td>@Model.Email</td>
+    </tr>
+    <tr>
+        <th><i class="bi bi-calendar-event me-1"></i>Дата на раждане</th>
+        <td>@Model.DateOfBirth.ToString("dd.MM.yyyy")</td>
+    </tr>
+    <tr>
+        <th><i class="bi bi-person-gear me-1"></i>Роля</th>
+        <td>@Model.Role</td>
+    </tr>
+    <tr>
+        <th><i class="bi bi-clock-history me-1"></i>Създадено на</th>
+        <td>@Model.CreatedOn.ToString("yyyy-MM-dd HH:mm")</td>
+    </tr>
+    <tr>
+        <th><i class="bi bi-clock me-1"></i>Обновено на</th>
+        <td>@(Model.UpdatedOn?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
+    </tr>
+    <tr>
+        <th><i class="bi bi-toggle-on me-1"></i>Активен</th>
+        <td>
+            @if (Model.IsActive)
+            {
+                <span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Да</span>
+            }
+            else
+            {
+                <span class="text-danger"><i class="bi bi-x-circle-fill me-1"></i>Не</span>
+            }
+        </td>
+    </tr>
+</table>
+
+<div class="mt-4 d-flex gap-2">
+    <a asp-action="Index" class="btn btn-secondary" title="Обратно към списъка">
+        <i class="bi bi-arrow-left-circle me-1"></i>Назад
+    </a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning" title="Редактирай потребителя">
+        <i class="bi bi-pencil-square me-1"></i>Редакция
+    </a>
+    <button type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteUserModal-@Model.Id"
+            title="Изтрий потребителя">
+        <i class="bi bi-trash me-1"></i>Изтриване
+    </button>
+
+    @{
+        Html.RenderPartial("_UserModalDelete", Model);
+    }
+
+</div>

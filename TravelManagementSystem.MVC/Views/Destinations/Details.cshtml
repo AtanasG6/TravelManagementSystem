@@ -1,0 +1,72 @@
+﻿@using TravelManagementSystem.MVC.Models.Destination
+@using TravelManagementSystem.MVC.Models.Destination.ViewModels
+@model DestinationViewModel
+@{
+    ViewBag.Title = "Детайли за дестинация";
+}
+
+<h2 class="mb-4">
+    <i class="bi bi-geo-alt-fill me-1"></i>@ViewBag.Title
+</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3"><i class="bi bi-flag-fill me-1 text-primary"></i>Държава:</dt>
+            <dd class="col-sm-9">@Model.Country</dd>
+
+            <dt class="col-sm-3"><i class="bi bi-building me-1 text-primary"></i>Град:</dt>
+            <dd class="col-sm-9">@Model.City</dd>
+
+            <dt class="col-sm-3"><i class="bi bi-card-text me-1 text-primary"></i>Описание:</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3"><i class="bi bi-geo me-1 text-primary"></i>Координати:</dt>
+            <dd class="col-sm-9">(@Model.Latitude:F6, @Model.Longitude:F6)</dd>
+
+            <dt class="col-sm-3"><i class="bi bi-toggle-on me-1 text-primary"></i>Активна:</dt>
+            <dd class="col-sm-9">
+                @if (Model.IsActive)
+                {
+                    <span class="text-success">
+                        <i class="bi bi-check-circle-fill me-1"></i>Да
+                    </span>
+                }
+                else
+                {
+                    <span class="text-danger">
+                        <i class="bi bi-x-circle-fill me-1"></i>Не
+                    </span>
+                }
+            </dd>
+
+            <dt class="col-sm-3"><i class="bi bi-person-check-fill me-1 text-primary"></i>Създадено от:</dt>
+            <dd class="col-sm-9">@Model.CreatedBy</dd>
+
+            <dt class="col-sm-3"><i class="bi bi-clock-history me-1 text-primary"></i>Създадено на:</dt>
+            <dd class="col-sm-9">@Model.CreatedOn.ToString("yyyy-MM-dd HH:mm")</dd>
+
+            <dt class="col-sm-3"><i class="bi bi-pencil-square me-1 text-primary"></i>Обновено от:</dt>
+            <dd class="col-sm-9">@((Model.UpdatedBy ?? "-"))</dd>
+
+            <dt class="col-sm-3"><i class="bi bi-clock me-1 text-primary"></i>Обновено на:</dt>
+            <dd class="col-sm-9">@((Model.UpdatedOn?.ToString("yyyy-MM-dd HH:mm") ?? "-"))</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-4 d-flex gap-2">
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle me-1"></i>Назад
+    </a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+        <i class="bi bi-pencil-square me-1"></i>Редакция
+    </a>
+    <button type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteDestinationModal-@Model.Id">
+        <i class="bi bi-trash me-1"></i>Изтрий
+    </button>
+    @await Html.PartialAsync("_DestinationModalDelete", Model)
+</div>

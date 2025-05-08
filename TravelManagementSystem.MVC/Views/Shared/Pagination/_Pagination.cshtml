@@ -1,0 +1,60 @@
+﻿@using X.PagedList
+@using Microsoft.AspNetCore.Routing
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model (IPagedList Paging, RouteValueDictionary RouteValues)
+
+@{
+	var paging = Model.Paging;
+	var routeValues = Model.RouteValues;
+}
+
+<form method="get" class="d-flex justify-content-between align-items-center mt-4">
+
+	<div class="input-group w-auto me-3">
+		<label class="input-group-text" for="pageSize">Елементи на страница</label>
+		<select class="form-select" name="pageSize" onchange="this.form.submit()">
+			@foreach (var size in new[] { 5, 10, 20, 50 })
+			{
+				<option value="@size" selected="@(paging.PageSize == size ? "selected" : null)">
+					@size
+				</option>
+			}
+		</select>
+	</div>
+
+	@if (paging.PageCount > 1)
+	{
+		<nav>
+			@Html.PagedListPager(
+						paging,
+						page =>
+						{
+							var newRouteValues = new RouteValueDictionary(routeValues)
+			{
+				["page"] = page,
+				["pageSize"] = paging.PageSize
+			};
+							return Url.Action(null, newRouteValues);
+						},
+						new PagedListRenderOptions
+		{
+			UlElementClasses = new[] { "pagination", "mb-0" },
+			LiElementClasses = new[] { "page-item" },
+			PageClasses = new[] { "page-link" },
+			LinkToFirstPageFormat = "«",
+			LinkToPreviousPageFormat = "‹",
+			LinkToNextPageFormat = "›",
+			LinkToLastPageFormat = "»"
+		})
+		</nav>
+	}
+
+	@foreach (var kvp in routeValues)
+	{
+		if (kvp.Key is not "page" and not "pageSize" && kvp.Value is not null)
+		{
+			<input type="hidden" name="@kvp.Key" value="@kvp.Value" />
+		}
+	}
+</form>

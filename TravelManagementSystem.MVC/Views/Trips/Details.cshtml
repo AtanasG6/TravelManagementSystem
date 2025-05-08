@@ -1,0 +1,60 @@
+﻿@using TravelManagementSystem.MVC.Models.Trip
+@using TravelManagementSystem.MVC.Models.Trip.ViewModels
+@model TripViewModel
+@{
+    ViewBag.Title = "Детайли за пътуване";
+}
+
+<h2 class="mb-4">
+    <i class="bi bi-info-circle-fill me-2"></i>@ViewBag.Title
+</h2>
+
+<table class="table table-bordered align-middle">
+    <tbody>
+        <tr>
+            <th><i class="bi bi-card-text me-1"></i>Име на пътуването</th>
+            <td>@Model.Title</td>
+        </tr>
+        <tr>
+            <th><i class="bi bi-geo-alt-fill me-1"></i>Дестинация</th>
+            <td>@Model.DestinationName</td>
+        </tr>
+        <tr>
+            <th><i class="bi bi-calendar-event me-1"></i>Начална дата</th>
+            <td>@Model.StartDate.ToString("dd.MM.yyyy")</td>
+        </tr>
+        <tr>
+            <th><i class="bi bi-calendar-event-fill me-1"></i>Крайна дата</th>
+            <td>@Model.EndDate.ToString("dd.MM.yyyy")</td>
+        </tr>
+        <tr>
+            <th><i class="bi bi-currency-dollar me-1"></i>Цена</th>
+            <td>@Model.Price.ToString("F2") лв.</td>
+        </tr>
+        <tr>
+            <th><i class="bi bi-person-check-fill me-1"></i>Създадено от</th>
+            <td>@Model.CreatedBy (@Model.CreatedOn.ToString("dd.MM.yyyy HH:mm"))</td>
+        </tr>
+        <tr>
+            <th><i class="bi bi-pencil-square me-1"></i>Обновено от</th>
+            <td>@((Model.UpdatedBy ?? "-")) (@((Model.UpdatedOn?.ToString("dd.MM.yyyy HH:mm") ?? "-")))</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="mt-4 d-flex gap-2">
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left me-1"></i>Назад
+    </a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+        <i class="bi bi-pencil-square me-1"></i>Редактирай
+    </a>
+    <button type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteTripModal-@Model.Id">
+        <i class="bi bi-trash me-1"></i>Изтрий
+    </button>
+
+    @await Html.PartialAsync("_TripModalDelete", Model)
+</div>

@@ -1,0 +1,50 @@
+﻿@using TravelManagementSystem.MVC.Models.Trip
+@using TravelManagementSystem.MVC.Models.Trip.Parameters
+
+@model TripFilterParameters
+
+<form method="get" class="row g-2 mb-4 align-items-end">
+    <div class="col-md-3">
+        <input type="text" name="title" value="@Model?.Title" class="form-control" placeholder="Име на пътуване" />
+    </div>
+
+    <div class="col-md-2">
+        <input type="number" step="0.01" name="priceMin" value="@Model?.PriceMin" class="form-control" placeholder="Мин. цена" />
+    </div>
+
+    <div class="col-md-2">
+        <input type="number" step="0.01" name="priceMax" value="@Model?.PriceMax" class="form-control" placeholder="Макс. цена" />
+    </div>
+
+    <div class="col-md-2">
+        <select name="orderBy" class="form-select">
+            <option value="">Сортиране по...</option>
+            <option value="title" selected="@(Model?.OrderBy == "title" ? "selected" : null)">Име</option>
+            <option value="price" selected="@(Model?.OrderBy == "price" ? "selected" : null)">Цена</option>
+            <option value="startDate" selected="@(Model?.OrderBy == "startDate" ? "selected" : null)">Начална дата</option>
+            <option value="endDate" selected="@(Model?.OrderBy == "endDate" ? "selected" : null)">Крайна дата</option>
+            <option value="createdOn" selected="@(Model?.OrderBy == "createdOn" ? "selected" : null)">Създадено на</option>
+            <option value="updatedOn" selected="@(Model?.OrderBy == "updatedOn" ? "selected" : null)">Обновено на</option>
+            <option value="destination.city" selected="@(Model?.OrderBy == "destination.city" ? "selected" : null)">Дестинация</option>
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <select name="isDescending" class="form-select">
+            <option value="false" selected="@(Model?.IsDescending == false ? "selected" : null)">Възходящо</option>
+            <option value="true" selected="@(Model?.IsDescending == true ? "selected" : null)">Низходящо</option>
+        </select>
+    </div>
+
+    <div class="col-md-auto d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search me-1"></i>Търси
+        </button>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-x-circle me-1"></i>Изчисти
+        </a>
+    </div>
+
+    <input type="hidden" name="page" value="1" />
+    <input type="hidden" name="pageSize" value="@Model?.PageSize" />
+</form>

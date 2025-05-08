@@ -1,0 +1,26 @@
+﻿@using TravelManagementSystem.MVC.Models.User
+@using TravelManagementSystem.MVC.Models.User.ViewModels
+@model UserViewModel
+
+<div class="modal fade" id="deleteUserModal-@Model.Id" tabindex="-1" aria-labelledby="deleteUserLabel-@Model.Id" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteUserLabel-@Model.Id">
+					Потвърди изтриване
+				</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Затвори"></button>
+			</div>
+			<div class="modal-body">
+				Сигурни ли сте, че искате да изтриете потребител <strong>@Model.Username</strong>?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отказ</button>
+				<form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
+					@Html.AntiForgeryToken()
+					<button type="submit" class="btn btn-danger">Изтрий</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
