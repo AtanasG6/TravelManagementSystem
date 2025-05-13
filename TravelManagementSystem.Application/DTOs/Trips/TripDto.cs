@@ -1,4 +1,4 @@
-﻿namespace TravelManagementSystem.Application.Validators.Trips
+﻿namespace TravelManagementSystem.Application.DTOs.Trips
 {
     public class TripDto
     {

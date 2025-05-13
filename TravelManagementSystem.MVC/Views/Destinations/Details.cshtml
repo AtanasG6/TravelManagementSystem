@@ -68,5 +68,5 @@
             data-bs-target="#deleteDestinationModal-@Model.Id">
         <i class="bi bi-trash me-1"></i>Изтрий
     </button>
-    @await Html.PartialAsync("_DestinationModalDelete", Model)
+    @await Html.PartialAsync("~/Views/Shared/Modals/_DestinationModalDelete.cshtml", Model)
 </div>

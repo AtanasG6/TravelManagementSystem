@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using TravelManagementSystem.Application.DTOs.Trips;
-using TravelManagementSystem.Application.Validators.Trips;
 using TravelManagementSystem.Domain.Entities;
 
 namespace TravelManagementSystem.Application.Profiles.Trips

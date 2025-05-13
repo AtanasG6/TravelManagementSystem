@@ -3,7 +3,6 @@ using TravelManagementSystem.API.Controllers.Base;
 using TravelManagementSystem.Application.DTOs.Trips;
 using TravelManagementSystem.Application.Parameters.Trips;
 using TravelManagementSystem.Application.Services.Interfaces;
-using TravelManagementSystem.Application.Validators.Trips;
 using TravelManagementSystem.Domain.Entities;
 
 namespace TravelManagementSystem.API.Controllers
