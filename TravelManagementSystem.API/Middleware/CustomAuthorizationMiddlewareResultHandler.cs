@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;
-using TravelManagementSystem.Application.Wrappers;
 using System.Text.Json;
+using TravelManagementSystem.Application.Wrappers;
 
 namespace TravelManagementSystem.API.Middleware
 {
@@ -18,15 +18,33 @@ namespace TravelManagementSystem.API.Middleware
                 return;
             }
 
-            context.Response.StatusCode = authorizeResult.Forbidden ? (int)HttpStatusCode.Forbidden : (int)HttpStatusCode.Unauthorized;
+            context.Response.StatusCode = authorizeResult.Forbidden
+                ? (int)HttpStatusCode.Forbidden
+                : (int)HttpStatusCode.Unauthorized;
+
             context.Response.ContentType = "application/json";
 
+            var errorKey = authorizeResult.Forbidden ? "Forbidden" : "Unauthorized";
+            var errorMessage = authorizeResult.Forbidden
+                ? "Нямате достъп до този ресурс."
+                : "Не сте влезли в системата.";
+
+            var errors = new Dictionary<string, List<string>>
+            {
+                { errorKey, new List<string> { errorMessage } }
+            };
+
             var response = ApiResponse<string>.FailureResponse(
-                new List<string> { authorizeResult.Forbidden ? "Нямате достъп до този ресурс." : "Не сте влезли в системата." },
+                errors,
                 "Достъпът е отказан"
             );
 
-            var json = JsonSerializer.Serialize(response);
+            var json = JsonSerializer.Serialize(response, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = false
+            });
+
             await context.Response.WriteAsync(json);
         }
     }

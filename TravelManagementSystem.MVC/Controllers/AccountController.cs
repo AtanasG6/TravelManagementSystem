@@ -29,12 +29,20 @@ namespace TravelManagementSystem.MVC.Controllers
 
             if (!result.Success)
             {
-                ModelState.AddModelError("", result.Message ?? "Грешка при вход.");
+                ModelState.AddModelError(string.Empty, result.Message ?? "Грешка при вход.");
+
                 if (result.Errors != null)
                 {
-                    foreach (var error in result.Errors)
-                        ModelState.AddModelError("", error);
+                    foreach (var kvp in result.Errors)
+                    {
+                        foreach (var errorMsg in kvp.Value)
+                        {
+                            // Ако ключът отговаря на property в модела, го добавяме така
+                            ModelState.AddModelError(kvp.Key, errorMsg);
+                        }
+                    }
                 }
+
                 return View(model);
             }
 
@@ -61,12 +69,19 @@ namespace TravelManagementSystem.MVC.Controllers
 
             if (!result.Success)
             {
-                ModelState.AddModelError("", result.Message ?? "Грешка при регистрация.");
+                ModelState.AddModelError(string.Empty, result.Message ?? "Грешка при регистрация.");
+
                 if (result.Errors != null)
                 {
-                    foreach (var error in result.Errors)
-                        ModelState.AddModelError("", error);
+                    foreach (var kvp in result.Errors)
+                    {
+                        foreach (var errorMsg in kvp.Value)
+                        {
+                            ModelState.AddModelError(kvp.Key, errorMsg);
+                        }
+                    }
                 }
+
                 return View(model);
             }
 

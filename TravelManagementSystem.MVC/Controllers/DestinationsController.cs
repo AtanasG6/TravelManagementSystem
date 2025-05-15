@@ -62,9 +62,24 @@ namespace TravelManagementSystem.MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public async Task<IActionResult> Details(int id)
+        {
+            var response = await _apiService.GetAsync<DestinationViewModel>($"destinations/{id}");
+
+            if (!response.Success || response.Data == null)
+            {
+                TempData["Error"] = response.Message ?? "Дестинацията не беше намерена.";
+                return RedirectToAction("Index");
+            }
+
+            return View(response.Data);
+        }
+
+        [HttpGet]
+        public IActionResult Create() => View(new CreateDestinationViewModel());
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateDestinationViewModel model)
         {
             if (!ModelState.IsValid)
@@ -74,11 +89,90 @@ namespace TravelManagementSystem.MVC.Controllers
 
             if (!response.Success)
             {
-                ModelState.AddModelError("", response.Message ?? "Грешка при създаване.");
+                if (response.Errors != null)
+                {
+                    foreach (var kvp in response.Errors)
+                    {
+                        foreach (var msg in kvp.Value)
+                        {
+                            ModelState.AddModelError(kvp.Key, msg);
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, response.Message ?? "Грешка при създаване.");
+                }
+
                 return View(model);
             }
 
             TempData["Success"] = "Дестинацията беше добавена успешно!";
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var result = await _apiService.GetAsync<EditDestinationViewModel>($"destinations/{id}");
+
+            if (!result.Success || result.Data == null)
+            {
+                TempData["Error"] = result.Message ?? "Дестинацията не беше намерена.";
+                return RedirectToAction("Index");
+            }
+
+            return View(result.Data);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditDestinationViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await _apiService.PutAsync<object>($"destinations/{model.Id}", model);
+
+            if (!result.Success)
+            {
+                if (result.Errors != null)
+                {
+                    foreach (var kvp in result.Errors)
+                    {
+                        foreach (var msg in kvp.Value)
+                        {
+                            ModelState.AddModelError(kvp.Key, msg);
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message ?? "Възникна грешка при редакцията.");
+                }
+
+                return View(model);
+            }
+
+            TempData["Success"] = "Дестинацията беше успешно обновена.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = await _apiService.DeleteAsync<object>($"destinations/{id}");
+
+            if (!response.Success)
+            {
+                TempData["Error"] = response.Message ?? "Грешка при изтриване на дестинацията.";
+            }
+            else
+            {
+                TempData["Success"] = "Дестинацията беше изтрита успешно.";
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -101,81 +195,6 @@ namespace TravelManagementSystem.MVC.Controllers
             };
 
             return View(model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Details(int id)
-        {
-            var response = await _apiService.GetAsync<DestinationViewModel>($"destinations/{id}");
-
-            if (!response.Success || response.Data == null)
-            {
-                TempData["Error"] = response.Message ?? "Дестинацията не беше намерена.";
-                return RedirectToAction("Index");
-            }
-
-            return View(response.Data);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var result = await _apiService.GetAsync<EditDestinationViewModel>($"destinations/{id}");
-
-            if (!result.Success || result.Data == null)
-            {
-                TempData["Error"] = result.Message ?? "Дестинацията не беше намерена.";
-                return RedirectToAction("Index");
-            }
-
-            return View(result.Data);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, EditDestinationViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var result = await _apiService.PutAsync<object>($"destinations/{id}", model);
-
-            if (!result.Success)
-            {
-                if (result.Errors != null)
-                {
-                    foreach (var error in result.Errors)
-                        ModelState.AddModelError("", error);
-                }
-                else
-                {
-                    TempData["Error"] = result.Message ?? "Възникна грешка при редакцията.";
-                }
-
-                return View(model);
-            }
-
-            TempData["Success"] = "Дестинацията беше успешно обновена.";
-            return RedirectToAction("Index");
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var response = await _apiService.DeleteAsync<object>($"destinations/{id}");
-
-            if (!response.Success)
-            {
-                TempData["Error"] = response.Message ?? "Грешка при изтриване на дестинацията.";
-            }
-            else
-            {
-                TempData["Success"] = "Дестинацията беше изтрита успешно.";
-            }
-
-            return RedirectToAction("Index");
         }
     }
 }

@@ -17,6 +17,7 @@ namespace TravelManagementSystem.MVC.Controllers
             _apiService = apiService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index([FromQuery] UserFilterParameters filters)
         {
             var queryBuilder = new List<string>();
@@ -58,6 +59,7 @@ namespace TravelManagementSystem.MVC.Controllers
             return View(pagedList);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var result = await _apiService.GetAsync<UserViewModel>($"users/{id}");
@@ -82,14 +84,10 @@ namespace TravelManagementSystem.MVC.Controllers
         public async Task<IActionResult> Create(CreateUserViewModel model)
         {
             if (model.DateOfBirth >= DateTime.Today)
-            {
                 ModelState.AddModelError(nameof(model.DateOfBirth), "Датата на раждане трябва да е в миналото.");
-            }
 
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
             var response = await _apiService.PostAsync<object>("users", model);
 
@@ -97,9 +95,12 @@ namespace TravelManagementSystem.MVC.Controllers
             {
                 if (response.Errors != null)
                 {
-                    foreach (var error in response.Errors)
+                    foreach (var kvp in response.Errors)
                     {
-                        ModelState.AddModelError(string.Empty, error);
+                        foreach (var msg in kvp.Value)
+                        {
+                            ModelState.AddModelError(kvp.Key, msg);
+                        }
                     }
                 }
                 else
@@ -133,27 +134,28 @@ namespace TravelManagementSystem.MVC.Controllers
         public async Task<IActionResult> Edit(EditUserViewModel model)
         {
             if (model.DateOfBirth >= DateTime.Today)
-            {
                 ModelState.AddModelError(nameof(model.DateOfBirth), "Датата на раждане трябва да е в миналото.");
-            }
 
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
-            var response = await _apiService.PutAsync<object>($"users/{model.Id}", model);
+            var result = await _apiService.PutAsync<object>($"users/{model.Id}", model);
 
-            if (!response.Success)
+            if (!result.Success)
             {
-                if (response.Errors != null)
+                if (result.Errors != null)
                 {
-                    foreach (var error in response.Errors)
-                        ModelState.AddModelError(string.Empty, error);
+                    foreach (var kvp in result.Errors)
+                    {
+                        foreach (var msg in kvp.Value)
+                        {
+                            ModelState.AddModelError(kvp.Key, msg);
+                        }
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, response.Message ?? "Възникна грешка при обновяване.");
+                    ModelState.AddModelError(string.Empty, result.Message ?? "Възникна грешка при обновяване.");
                 }
 
                 return View(model);
@@ -169,17 +171,16 @@ namespace TravelManagementSystem.MVC.Controllers
         {
             var result = await _apiService.DeleteAsync<object>($"users/{id}");
 
-            if (result.Success)
+            if (!result.Success)
             {
-                TempData["Success"] = "Потребителят беше изтрит успешно.";
+                TempData["Error"] = result.Message ?? "Възникна грешка при изтриването на потребителя.";
             }
             else
             {
-                TempData["Error"] = result.Message ?? "Възникна грешка при изтриването на потребителя.";
+                TempData["Success"] = "Потребителят беше изтрит успешно.";
             }
 
             return RedirectToAction("Index");
         }
-
     }
 }

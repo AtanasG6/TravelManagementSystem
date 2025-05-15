@@ -28,6 +28,15 @@
             </div>
 
             <div class="mb-3">
+                @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Въведете нова парола" })
+                </div>
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
                 @Html.LabelFor(m => m.Email, new { @class = "form-label" })
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>

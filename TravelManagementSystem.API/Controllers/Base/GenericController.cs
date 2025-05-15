@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using FluentValidation;
 using TravelManagementSystem.Application.Parameters.Base;
 using TravelManagementSystem.Application.Services.Interfaces;
@@ -40,7 +35,7 @@ namespace TravelManagementSystem.API.Controllers.Base
                 result.Message = "Данните са извлечени успешно.";
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     ApiResponse<TViewDto>.FailureResponse("Възникна грешка при обработката на заявката."));
@@ -65,7 +60,7 @@ namespace TravelManagementSystem.API.Controllers.Base
 
                 return Ok(ApiResponse<TViewDto>.SuccessResponse(data, "Данните са извлечени успешно."));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     ApiResponse<TViewDto>.FailureResponse("Възникна грешка при обработката на заявката."));
@@ -88,10 +83,16 @@ namespace TravelManagementSystem.API.Controllers.Base
             }
             catch (ValidationException vex)
             {
-                var errors = vex.Errors.Select(e => e.ErrorMessage).ToList();
+                var errors = vex.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToList()
+                    );
+
                 return BadRequest(ApiResponse<TViewDto>.FailureResponse(errors, "Грешка при валидация."));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     ApiResponse<TViewDto>.FailureResponse("Възникна грешка при обработката на заявката."));
@@ -123,10 +124,16 @@ namespace TravelManagementSystem.API.Controllers.Base
             }
             catch (ValidationException vex)
             {
-                var errors = vex.Errors.Select(e => e.ErrorMessage).ToList();
+                var errors = vex.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToList()
+                    );
+
                 return BadRequest(ApiResponse<TViewDto>.FailureResponse(errors, "Грешка при валидация."));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     ApiResponse<TViewDto>.FailureResponse("Възникна грешка при обработката на заявката."));
@@ -158,10 +165,16 @@ namespace TravelManagementSystem.API.Controllers.Base
             }
             catch (ValidationException vex)
             {
-                var errors = vex.Errors.Select(e => e.ErrorMessage).ToList();
+                var errors = vex.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToList()
+                    );
+
                 return BadRequest(ApiResponse<TViewDto>.FailureResponse(errors, "Грешка при валидация."));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     ApiResponse<TViewDto>.FailureResponse("Възникна грешка при обработката на заявката."));
@@ -187,7 +200,7 @@ namespace TravelManagementSystem.API.Controllers.Base
                 await _service.DeleteAsync(id);
                 return Ok(ApiResponse<object>.SuccessResponse(null, "Записът е изтрит успешно."));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     ApiResponse<object>.FailureResponse("Възникна грешка при обработката на заявката."));
@@ -212,7 +225,7 @@ namespace TravelManagementSystem.API.Controllers.Base
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

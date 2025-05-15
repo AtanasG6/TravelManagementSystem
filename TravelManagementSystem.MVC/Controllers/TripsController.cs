@@ -64,6 +64,20 @@ namespace TravelManagementSystem.MVC.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var result = await _apiService.GetAsync<TripViewModel>($"trips/{id}");
+
+            if (!result.Success || result.Data == null)
+            {
+                TempData["Error"] = result.Message ?? "Пътуването не беше намерено.";
+                return RedirectToAction("Index");
+            }
+
+            return View(result.Data);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var response = await _apiService.GetAsync<List<DestinationViewModel>>("destinations");
@@ -95,9 +109,7 @@ namespace TravelManagementSystem.MVC.Controllers
         public async Task<IActionResult> Create(CreateTripViewModel model)
         {
             if (model.EndDate <= model.StartDate)
-            {
                 ModelState.AddModelError("EndDate", "Крайната дата трябва да е след началната дата.");
-            }
 
             if (!ModelState.IsValid)
             {
@@ -107,8 +119,7 @@ namespace TravelManagementSystem.MVC.Controllers
                     {
                         Id = d.Id,
                         DisplayName = $"{d.City}, {d.Country}"
-                    })
-                    .ToList() ?? new();
+                    }).ToList() ?? new();
 
                 return View(model);
             }
@@ -126,7 +137,21 @@ namespace TravelManagementSystem.MVC.Controllers
 
             if (!result.Success)
             {
-                ViewBag.Error = result.Message ?? "Грешка при създаване на пътуване.";
+                if (result.Errors != null)
+                {
+                    foreach (var kvp in result.Errors)
+                    {
+                        foreach (var msg in kvp.Value)
+                        {
+                            ModelState.AddModelError(kvp.Key, msg);
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message ?? "Грешка при създаване на пътуване.");
+                }
+
                 return View(model);
             }
 
@@ -141,7 +166,10 @@ namespace TravelManagementSystem.MVC.Controllers
             var destinationsResponse = await _apiService.GetAsync<List<DestinationViewModel>>("destinations");
 
             if (!tripResponse.Success || tripResponse.Data == null)
-                return NotFound();
+            {
+                TempData["Error"] = tripResponse.Message ?? "Пътуването не беше намерено.";
+                return RedirectToAction("Index");
+            }
 
             var model = new EditTripViewModel
             {
@@ -194,25 +222,26 @@ namespace TravelManagementSystem.MVC.Controllers
 
             if (!result.Success)
             {
-                ViewBag.Error = result.Message ?? "Грешка при редактиране.";
+                if (result.Errors != null)
+                {
+                    foreach (var kvp in result.Errors)
+                    {
+                        foreach (var msg in kvp.Value)
+                        {
+                            ModelState.AddModelError(kvp.Key, msg);
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message ?? "Грешка при редактиране.");
+                }
+
                 return View(model);
             }
 
             TempData["Success"] = "Пътуването беше редактирано успешно.";
             return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> Details(int id)
-        {
-            var result = await _apiService.GetAsync<TripViewModel>($"trips/{id}");
-
-            if (!result.Success || result.Data == null)
-            {
-                TempData["Error"] = result.Message ?? "Пътуването не беше намерено.";
-                return RedirectToAction("Index");
-            }
-
-            return View(result.Data);
         }
 
         [HttpPost]

@@ -30,5 +30,11 @@ namespace TravelManagementSystem.MVC.Models.User.ViewModels
         [MaxLength(20)]
         [Display(Name = "Телефонен номер")]
         public string PhoneNumber { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Паролата е задължителна.")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Паролата трябва да бъде между 6 и 100 символа.")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Парола")]
+        public string Password { get; set; } = string.Empty;
     }
 }
