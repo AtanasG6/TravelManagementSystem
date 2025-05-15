@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using TravelManagementSystem.API.Middleware;
 using TravelManagementSystem.Application.Profiles.Users;
 using TravelManagementSystem.Application.Repositories.Interfaces;
-using TravelManagementSystem.Application.Services.Implementations;
+using TravelManagementSystem.Infrastructure.Services.Implementations;
 using TravelManagementSystem.Application.Services.Interfaces;
 using TravelManagementSystem.Application.Validators.Users;
 using TravelManagementSystem.Domain.Repositories.Interfaces;

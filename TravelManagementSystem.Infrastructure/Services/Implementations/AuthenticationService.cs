@@ -10,7 +10,7 @@ using TravelManagementSystem.Application.Services.Interfaces;
 using TravelManagementSystem.Domain.Entities;
 using TravelManagementSystem.Domain.Repositories.Interfaces;
 
-namespace TravelManagementSystem.Application.Services.Implementations
+namespace TravelManagementSystem.Infrastructure.Services.Implementations
 {
     public class AuthenticationService : IAuthenticationService
     {

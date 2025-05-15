@@ -21,7 +21,6 @@ namespace TravelManagementSystem.MVC.Services
             _apiBase = $"{baseUrl.TrimEnd('/')}/api";
         }
 
-
         public async Task<ApiResponse<string>> LoginAsync(LoginViewModel model)
         {
             var json = JsonConvert.SerializeObject(model);

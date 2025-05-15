@@ -5,7 +5,7 @@ using TravelManagementSystem.Application.Helpers;
 using TravelManagementSystem.Application.Models.External;
 using TravelManagementSystem.Application.Services.Interfaces;
 
-namespace TravelManagementSystem.Application.Services.Implementations
+namespace TravelManagementSystem.Infrastructure.Services.Implementations
 {
     public class ExternalApiService : IExternalApiService
     {

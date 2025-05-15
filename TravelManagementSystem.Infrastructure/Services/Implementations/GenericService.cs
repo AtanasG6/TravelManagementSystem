@@ -7,7 +7,7 @@ using TravelManagementSystem.Application.Wrappers;
 using TravelManagementSystem.Domain.Common;
 using X.PagedList;
 
-namespace TravelManagementSystem.Application.Services.Implementations
+namespace TravelManagementSystem.Infrastructure.Services.Implementations
 {
     public class GenericService<TViewDto, TCreateDto, TUpdateDto, TPatchDto, TQueryParameters, TEntity>
         : IGenericService<TViewDto, TCreateDto, TUpdateDto, TPatchDto, TQueryParameters, TEntity>
