@@ -1,5 +1,6 @@
 using System.Globalization;
-using TravelManagementSystem.MVC.Services;
+using TravelManagementSystem.MVC.Services.Implementations;
+using TravelManagementSystem.MVC.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +8,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddSession();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<ApiService>();
-builder.Services.AddHttpClient<AiService>();
+builder.Services.AddHttpClient<IApiService, ApiService>();
+builder.Services.AddHttpClient<IAiService, AiService>();
 
 var app = builder.Build();
 

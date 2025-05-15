@@ -3,7 +3,7 @@ using TravelManagementSystem.MVC.Filters;
 using TravelManagementSystem.MVC.Models.Destination.ViewModels;
 using TravelManagementSystem.MVC.Models.Trip.Parameters;
 using TravelManagementSystem.MVC.Models.Trip.ViewModels;
-using TravelManagementSystem.MVC.Services;
+using TravelManagementSystem.MVC.Services.Interfaces;
 using X.PagedList;
 
 namespace TravelManagementSystem.MVC.Controllers
@@ -11,9 +11,9 @@ namespace TravelManagementSystem.MVC.Controllers
     [RequireJwt]
     public class TripsController : Controller
     {
-        private readonly ApiService _apiService;
+        private readonly IApiService _apiService;
 
-        public TripsController(ApiService apiService)
+        public TripsController(IApiService apiService)
         {
             _apiService = apiService;
         }

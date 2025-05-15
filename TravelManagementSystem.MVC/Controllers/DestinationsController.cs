@@ -4,7 +4,7 @@ using TravelManagementSystem.MVC.Models.Destination.External;
 using TravelManagementSystem.MVC.Models.Destination.Parameters;
 using TravelManagementSystem.MVC.Models.Destination.ViewModels;
 using TravelManagementSystem.MVC.Models.Shared.ExternalData;
-using TravelManagementSystem.MVC.Services;
+using TravelManagementSystem.MVC.Services.Interfaces;
 using X.PagedList;
 
 namespace TravelManagementSystem.MVC.Controllers
@@ -12,9 +12,9 @@ namespace TravelManagementSystem.MVC.Controllers
     [RequireJwt]
     public class DestinationsController : Controller
     {
-        private readonly ApiService _apiService;
+        private readonly IApiService _apiService;
 
-        public DestinationsController(ApiService apiService)
+        public DestinationsController(IApiService apiService)
         {
             _apiService = apiService;
         }

@@ -3,10 +3,11 @@ using System.Text;
 using Newtonsoft.Json;
 using TravelManagementSystem.MVC.Models.Shared.Common;
 using TravelManagementSystem.MVC.Models.User.ViewModels;
+using TravelManagementSystem.MVC.Services.Interfaces;
 
-namespace TravelManagementSystem.MVC.Services
+namespace TravelManagementSystem.MVC.Services.Implementations
 {
-    public class ApiService
+    public class ApiService : IApiService
     {
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _contextAccessor;
@@ -17,7 +18,7 @@ namespace TravelManagementSystem.MVC.Services
             _httpClient = httpClient;
             _contextAccessor = contextAccessor;
 
-            var baseUrl = Environment.GetEnvironmentVariable("API_BASE_URL") ?? "https://localhost:7012";
+            var baseUrl = "https://localhost:7012";
             _apiBase = $"{baseUrl.TrimEnd('/')}/api";
         }
 

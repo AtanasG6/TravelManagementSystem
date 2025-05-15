@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TravelManagementSystem.MVC.Models.User.ViewModels;
-using TravelManagementSystem.MVC.Services;
+using TravelManagementSystem.MVC.Services.Interfaces;
 
 namespace TravelManagementSystem.MVC.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApiService _apiService;
+        private readonly IApiService _apiService;
 
-        public AccountController(ApiService apiService)
+        public AccountController(IApiService apiService)
         {
             _apiService = apiService;
         }

@@ -2,7 +2,7 @@
 using TravelManagementSystem.MVC.Filters;
 using TravelManagementSystem.MVC.Models.User.Parameters;
 using TravelManagementSystem.MVC.Models.User.ViewModels;
-using TravelManagementSystem.MVC.Services;
+using TravelManagementSystem.MVC.Services.Interfaces;
 using X.PagedList;
 
 namespace TravelManagementSystem.MVC.Controllers
@@ -10,9 +10,9 @@ namespace TravelManagementSystem.MVC.Controllers
     [RequireJwt]
     public class UsersController : Controller
     {
-        private readonly ApiService _apiService;
+        private readonly IApiService _apiService;
 
-        public UsersController(ApiService apiService)
+        public UsersController(IApiService apiService)
         {
             _apiService = apiService;
         }

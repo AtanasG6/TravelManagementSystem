@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TravelManagementSystem.MVC.Services;
+using TravelManagementSystem.MVC.Services.Interfaces;
 
 namespace TravelManagementSystem.MVC.Controllers
 {
     public class AiFactsController : Controller
     {
-        private readonly AiService _aiService;
+        private readonly IAiService _aiService;
 
-        public AiFactsController(AiService aiService)
+        public AiFactsController(IAiService aiService)
         {
             _aiService = aiService;
         }

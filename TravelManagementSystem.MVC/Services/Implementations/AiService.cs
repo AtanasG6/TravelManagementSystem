@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Text;
+using TravelManagementSystem.MVC.Services.Interfaces;
 
-namespace TravelManagementSystem.MVC.Services
+namespace TravelManagementSystem.MVC.Services.Implementations
 {
-    public class AiService
+    public class AiService : IAiService
     {
         private readonly HttpClient _httpClient;
 
@@ -20,7 +21,7 @@ namespace TravelManagementSystem.MVC.Services
             var body = new
             {
                 model = "mistral",
-                prompt = prompt,
+                prompt,
                 stream = false
             };
 
