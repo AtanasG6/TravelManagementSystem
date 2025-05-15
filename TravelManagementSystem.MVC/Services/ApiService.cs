@@ -10,20 +10,24 @@ namespace TravelManagementSystem.MVC.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _contextAccessor;
-        private const string ApiBase = "https://localhost:7012/api";
+        private readonly string _apiBase;
 
         public ApiService(HttpClient httpClient, IHttpContextAccessor contextAccessor)
         {
             _httpClient = httpClient;
             _contextAccessor = contextAccessor;
+
+            var baseUrl = Environment.GetEnvironmentVariable("API_BASE_URL") ?? "https://localhost:7012";
+            _apiBase = $"{baseUrl.TrimEnd('/')}/api";
         }
+
 
         public async Task<ApiResponse<string>> LoginAsync(LoginViewModel model)
         {
             var json = JsonConvert.SerializeObject(model);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync($"{ApiBase}/authentication/login", content);
+            var response = await _httpClient.PostAsync($"{_apiBase}/authentication/login", content);
             var responseContent = await response.Content.ReadAsStringAsync();
 
             var result = JsonConvert.DeserializeObject<ApiResponse<string>>(responseContent);
@@ -41,7 +45,7 @@ namespace TravelManagementSystem.MVC.Services
             var json = JsonConvert.SerializeObject(model);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync($"{ApiBase}/authentication/register", content);
+            var response = await _httpClient.PostAsync($"{_apiBase}/authentication/register", content);
             var responseContent = await response.Content.ReadAsStringAsync();
 
             var result = JsonConvert.DeserializeObject<ApiResponse<string>>(responseContent);
@@ -77,7 +81,7 @@ namespace TravelManagementSystem.MVC.Services
         {
             AddJwtToken();
 
-            var response = await _httpClient.GetAsync($"{ApiBase}/{endpoint}");
+            var response = await _httpClient.GetAsync($"{_apiBase}/{endpoint}");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<ApiResponse<T>>(content)
@@ -88,7 +92,7 @@ namespace TravelManagementSystem.MVC.Services
         {
             AddJwtToken();
 
-            var response = await _httpClient.GetAsync($"{ApiBase}/{endpoint}");
+            var response = await _httpClient.GetAsync($"{_apiBase}/{endpoint}");
             var content = await response.Content.ReadAsStringAsync();
 
             try
@@ -109,7 +113,7 @@ namespace TravelManagementSystem.MVC.Services
             var json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync($"{ApiBase}/{endpoint}", content);
+            var response = await _httpClient.PostAsync($"{_apiBase}/{endpoint}", content);
             var responseContent = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<ApiResponse<T>>(responseContent)
@@ -123,7 +127,7 @@ namespace TravelManagementSystem.MVC.Services
             var json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"{ApiBase}/{endpoint}", content);
+            var response = await _httpClient.PutAsync($"{_apiBase}/{endpoint}", content);
             var responseContent = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<ApiResponse<TResponse>>(responseContent)
@@ -137,7 +141,7 @@ namespace TravelManagementSystem.MVC.Services
             var json = JsonConvert.SerializeObject(patchDocument);
             var content = new StringContent(json, Encoding.UTF8, "application/json-patch+json");
 
-            var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{ApiBase}/{endpoint}")
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{_apiBase}/{endpoint}")
             {
                 Content = content
             };
@@ -153,7 +157,7 @@ namespace TravelManagementSystem.MVC.Services
         {
             AddJwtToken();
 
-            var response = await _httpClient.DeleteAsync($"{ApiBase}/{endpoint}");
+            var response = await _httpClient.DeleteAsync($"{_apiBase}/{endpoint}");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<ApiResponse<T>>(content)

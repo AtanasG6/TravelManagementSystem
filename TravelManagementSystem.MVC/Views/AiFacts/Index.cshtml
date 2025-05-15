@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Интересни факти";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Интересни факти за дестинация</h2>
+
+    <form method="post" class="card p-4 shadow-sm">
+        <div class="mb-3">
+            <label for="destinationName" class="form-label">Име на дестинация:</label>
+            <input type="text" id="destinationName" name="destinationName" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Покажи факти</button>
+    </form>
+
+    @if (ViewBag.Facts != null)
+    {
+        <div class="card mt-4 p-3">
+            <h5 class="text-success">Факти за @ViewBag.DestinationName:</h5>
+            <ul class="list-group mt-2">
+                @foreach (var line in ViewBag.Facts.ToString().Split('\n'))
+                {
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        <li class="list-group-item">@line.Trim()</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+</div>

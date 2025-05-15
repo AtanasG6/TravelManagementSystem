@@ -8,6 +8,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddSession();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ApiService>();
+builder.Services.AddHttpClient<AiService>();
 
 var app = builder.Build();
 

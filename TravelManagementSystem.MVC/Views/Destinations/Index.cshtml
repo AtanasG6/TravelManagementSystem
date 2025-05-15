@@ -83,6 +83,14 @@ else
 								<i class="bi bi-info-circle me-1"></i>Инфо
 							</a>
 
+							<a asp-controller="AiFacts"
+							   asp-action="Index"
+							   asp-route-destinationName="@($"{d.City}, {d.Country}")"
+							   class="btn btn-sm btn-outline-secondary"
+							   title="Генерирай интересни факти чрез AI">
+								<i class="bi bi-lightbulb me-1"></i>Факти
+							</a>
+
 							<a asp-action="Edit" asp-route-id="@d.Id" class="btn btn-sm btn-outline-warning" title="Редактирай дестинация">
 								<i class="bi bi-pencil-square me-1"></i>Редакция
 							</a>
